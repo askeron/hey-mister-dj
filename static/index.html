@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <title>Hey Mister DJ - Play your song? We may...</title>
+</head>
+
+<body>
+<div id="app">
+    <section class="head">
+        <h1>Hey Mister DJ<span v-if="adminPassword != null"><br>Admin Modus</span></h1>
+    </section>
+    <div class="container-fluid">
+        <section class="row mb-3">
+            <div class="col d-flex align-items-center">
+                <div class="my-user-icon-wrapper position-relative mr-2">
+                    <img id="my-user-icon" v-bind:src="'https://www.gravatar.com/avatar/'+userId+'?d=wavatar&s=50'">
+                    <span id="my-user-icon-label">You</span>
+                </div>
+                <form>
+                    <div class="input-group">
+                        <input v-model="songName" type="text" class="form-control" placeholder="Tippe deinen Song ein..." aria-label="Tippe deinen Song ein"
+                            aria-describedby="add-song" v-on:keydown.enter.prevent="addSong">
+                        <div class="input-group-append">
+                            <button v-on:click="addSong" class="btn btn-primary" type="button" id="btn-add-song">+</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <button v-if="adminPassword != null" v-on:click="reloadSongs" class="btn btn-primary" type="button" id="btn-reload">Reload</button>
+        <button v-on:click="rotateSort" class="btn btn-primary" type="button" id="btn-change-sort">
+            <span class="d-flex justify-content-center" v-if="sortOrderAlphabetical">
+                <svg id="sortUp" width="12px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sort-up"
+                    class="svg-inline--fa fa-sort-up fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                        d="M279 224H41c-21.4 0-32.1-25.9-17-41L143 64c9.4-9.4 24.6-9.4 33.9 0l119 119c15.2 15.1 4.5 41-16.9 41z"></path>
+                </svg>
+                sorted by title
+            </span>
+            <span v-else>
+                <svg id="sortDown" width="12px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sort-down"
+                    class="svg-inline--fa fa-sort-down fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                        d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z"></path>
+                </svg>
+                sorted by votes
+            </span>
+            <!-- <span>Sort {{sortOrderAlphabetical ? "A-Z" : "by Votes"}}</span> -->
+        </button>
+        <section class="row songlist-wrapper">
+            <div class="col">
+                <transition-group name="flip-list" tag="ul" class="list-group list-group-flush">
+                    <!-- Loop through data -->
+                    <li v-for="song in sortedSongs" v-bind:key="song.id" class="list-group-item">
+                        <template>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="song-title">{{ song.name }}</span>
+                                        <span v-if="adminPassword != null"><button v-on:click="deleteSong(song)" class="btn btn-primary" type="button" id="btn-delete-song">Delete</button></span>
+                                        <div class="col user-icon-wrapper">
+                                            <span class="user-icons"><img v-bind:src="'https://www.gravatar.com/avatar/'+song.creator+'?d=wavatar&s=25'"></span>
+                                        </div>
+                                        <span class="badge badge-primary badge-pill">{{ song.votes.length }}</span>
+                                        <svg width="30px" height="30px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-alt-circle-up"
+                                            v-bind:class="'svg-inline--fa fa-arrow-alt-circle-up'+(isVotedByMe(song)?'-active':'')+' fa-w-16'"
+                                            v-on:click="voteSong(song)"
+                                            role="img" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path fill="currentColor"
+                                                d="M8 256C8 119 119 8 256 8s248 111 248 248-111 248-248 248S8 393 8 256zm292 116V256h70.9c10.7 0 16.1-13 8.5-20.5L264.5 121.2c-4.7-4.7-12.2-4.7-16.9 0l-115 114.3c-7.6 7.6-2.2 20.5 8.5 20.5H212v116c0 6.6 5.4 12 12 12h64c6.6 0 12-5.4 12-12z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="song.votes.length >= 0">
+                                <hr>
+                                <div class="row">
+                                    <div class="col user-icon-wrapper">
+                                        <!--<span class="mr-4">Andere User: </span>-->
+                                        <span class="user-icons" v-for="vote in song.votes"><img v-bind:src="'https://www.gravatar.com/avatar/'+vote+'?d=wavatar&s=25'"></span>
+                                        <span><svg width="27" height="27"></svg></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </li>
+                </transition-group>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="row mt-3">
+                <div class="col">
+                    <p>Made with
+                    <svg width="14px" height="14px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="heart" class="svg-inline--fa fa-heart fa-w-16"
+                        role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill="currentColor"
+                            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z">
+                        </path>
+                    </svg>
+                    by Dr. Bunsen and Thorben</p>
+                    <p>Icons von <a href="https://fontawesome.com/license">FontAwesome</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="app.js"></script>
+</body>
+
+</html>

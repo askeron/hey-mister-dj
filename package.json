@@ -1,0 +1,26 @@
+{
+  "name": "hey-mister-dj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gilian/hey-mister-dj.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Gilian/hey-mister-dj/issues"
+  },
+  "homepage": "https://github.com/Gilian/hey-mister-dj#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "json-autosave": "^1.1.2",
+    "node-cron": "^2.0.3",
+    "socket.io": "^2.2.0"
+  }
+}
