@@ -194,3 +194,7 @@ footer .fa-heart > path { fill: var(--bg-color); }
 .flip-list-move {
     transition: transform 1s;
   }
+
+.github-fork-ribbon:before {
+    background-color: #ff7600;
+}
