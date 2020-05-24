@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gilian/hey-mister-dj.git"
+    "url": "git+https://github.com/askeron/hey-mister-dj.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Gilian/hey-mister-dj/issues"
+    "url": "https://github.com/askeron/hey-mister-dj/issues"
   },
-  "homepage": "https://github.com/Gilian/hey-mister-dj#readme",
+  "homepage": "https://github.com/askeron/hey-mister-dj#readme",
   "dependencies": {
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
