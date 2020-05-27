@@ -176,5 +176,5 @@ function onSongsChanged(userId) {
     }));
 }
 
-server.listen(7400);
+server.listen(8080);
 })()
