@@ -1,6 +1,6 @@
 FROM node:12-alpine
-RUN mkdir -p /home/node/app/node_modules
-WORKDIR /home/node/app
+RUN mkdir -p /app/node_modules
+WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
