@@ -1,0 +1,3 @@
+Contact: mailto:security-hey-mister-dj@drbunsen.de
+Contact: https://github.com/askeron/hey-mister-dj/issues
+Preferred-Languages: de,en
