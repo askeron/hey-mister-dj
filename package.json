@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/askeron/hey-mister-dj#readme",
   "dependencies": {
+    "args-parser": "^1.1.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "json-autosave": "^1.1.2",

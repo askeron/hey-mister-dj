@@ -1,3 +1,5 @@
+const { exit } = require('process');
+
 (async () => {
 const crypto = require('crypto');
 const express = require('express');
@@ -9,6 +11,7 @@ const fs = require('fs');
 const util = require('util');
 const asyncHandler = require('express-async-handler')
 const jsonAutosave = require('json-autosave');
+const args = require("args-parser")(process.argv)
 
 const state = await jsonAutosave('states/state.json', {
     data: {"users":[{"id":"fb195b641ea58eaad0a7f7b25dc55fcfefedb6bc","secret":"fcc26503d946b90d956c11cab0cb5bfebd061629"},{"id":"fe46872aafc77bb3abd873408c9e62b6fe2aabb0","secret":"acc14206385d8cb226c621c322ec3b76fe599a29"},{"id":"6b974bc2065dddd117b715fb40664aded02dc34e","secret":"8b385e29b0a958e9f925804016580e0a28fab385"}],"songs":[{"id":"724272d8178318621340ab8a2da4d5a5941ee4d4","name":"Tim Toupe - Helikopter 117","votes":["fb195b641ea58eaad0a7f7b25dc55fcfefedb6bc"],"creator":"fe46872aafc77bb3abd873408c9e62b6fe2aabb0"},{"id":"18b74f483c6e9972d484b2635c3ddeb6f7ae9334","name":"Queen - Bohemian Rhapsody","votes":[],"creator":"fe46872aafc77bb3abd873408c9e62b6fe2aabb0"},{"id":"4dc1e849402f63c97f93cbb2b79bcdfd755a2727","name":"Synapsenkitzler","votes":[],"creator":"fe46872aafc77bb3abd873408c9e62b6fe2aabb0"}]}
@@ -16,7 +19,11 @@ const state = await jsonAutosave('states/state.json', {
 
 const timeout = ms => new Promise(res => setTimeout(res, ms))
 
-const adminPassword = "unser-thorben-123"
+const adminPassword = args.adminPassword || process.env.HEY_MISTER_DJ_ADMIN_PASSWORD
+if (!adminPassword) {
+    console.error("no admin password found")
+    process.exit(1)
+}
 
 app.use(express.static(__dirname + '/static'));
 app.use('/node_modules',express.static(__dirname + '/node_modules'));
