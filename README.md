@@ -10,5 +10,5 @@ Run `docker run -P askeron/hey-mister-dj` and open it under http://localhost:808
 
 To run it with persistent storage you need to mount the path `/app/states`, e.g.
 
-`docker run -P -v ~/hey-mister-dj/states:/app/states askeron/hey-mister-dj`
+`docker run -P -v /some/path/on/my/disk:/app/states askeron/hey-mister-dj`
 
