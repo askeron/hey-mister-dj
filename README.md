@@ -6,7 +6,7 @@
 
 ## Demo
 
-Try it on [hey-mister-dj.de](https://hey-mister-dj.de/).
+Try it on [https://hey-mister-dj.de/](https://hey-mister-dj.de/).
 
 The admin interface can be found under https://hey-mister-dj.de/#adminPassword=examplepassword
 
