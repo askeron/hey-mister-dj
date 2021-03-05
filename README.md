@@ -2,8 +2,8 @@
 
 ![node-current](https://img.shields.io/badge/node-%3E%3D%2010.0.0-brightgreen)
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/hey-mister-dj.de.svg)](https://hey-mister-dj.de/)
-[![GitHub license](https://img.shields.io/github/license/askeron/camiacmo.svg)](https://github.com/askeron/camiacmo/blob/master/LICENSE)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/askeron/camiacmo/graphs/commit-activity)
+[![GitHub license](https://img.shields.io/github/license/askeron/hey-mister-dj.svg)](https://github.com/askeron/hey-mister-dj/blob/master/LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/askeron/hey-mister-dj/graphs/commit-activity)
 ![Node.js CI](https://github.com/askeron/hey-mister-dj/workflows/Node.js%20CI%20%2B%20Docker%20Build/badge.svg)
 
 ## Demo
