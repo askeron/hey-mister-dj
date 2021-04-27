@@ -25,4 +25,3 @@ Run `docker run -p 8080:8080 -e HEY_MISTER_DJ_ADMIN_PASSWORD=examplepassword ask
 To run it with persistent storage you need to mount the path `/app/states`, e.g.
 
 `docker run -p 8080:8080 -e HEY_MISTER_DJ_ADMIN_PASSWORD=examplepassword -v /some/path/on/my/disk:/app/states askeron/hey-mister-dj`
-
