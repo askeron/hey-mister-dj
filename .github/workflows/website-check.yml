@@ -12,8 +12,14 @@ jobs:
     name: Ping the site
     steps:
     - name: Check the site
-      id: hello
-      uses: srt32/uptime@master
+      uses: jtalk/url-health-check-action@v4
       with:
-        url-to-hit: "https://www.hey-mister-dj.de/"
-        expected-statuses: "200,301"
+        # Check the following URLs one by one sequentially
+        url: https://www.hey-mister-dj.de/
+        # Follow redirects, or just report success on 3xx status codes
+        follow-redirect: false # Optional, defaults to "false"
+        # Fail this action after this many failed attempts
+        max-attempts: 3 # Optional, defaults to 1
+        # Delay between retries
+        retry-delay: 5s # Optional, only applicable to max-attempts > 1
+        # there are additional options, see https://github.com/marketplace/actions/url-health-check
