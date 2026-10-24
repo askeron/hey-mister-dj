@@ -23,5 +23,8 @@
     "json-autosave": "^1.1.2",
     "node-cron": "^2.0.3",
     "socket.io": "^2.4.0"
+  },
+  "allowScripts": {
+    "node-cron@2.0.3": true
   }
 }
